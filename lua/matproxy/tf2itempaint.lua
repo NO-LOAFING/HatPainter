@@ -10,9 +10,7 @@ matproxy.Add(
 
 	bind = function(self, mat, ent)
 
-		if !IsValid(ent) then return end
-
-		if IsValid(ent.ProxyentPaintColor) and ent.ProxyentPaintColor.Color then
+		if IsValid(ent) and IsValid(ent.ProxyentPaintColor) and ent.ProxyentPaintColor.Color then
 			mat:SetVector(self.ResultTo, ent.ProxyentPaintColor.Color)
 		else
 			mat:SetVector(self.ResultTo, Vector(0,0,0))
