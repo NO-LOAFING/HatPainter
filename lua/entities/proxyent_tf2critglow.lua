@@ -64,38 +64,8 @@ function ENT:Initialize()
 	PrecacheParticleSystem("critgun_weaponmodel_colorable")
 	PrecacheParticleSystem("peejar_drips")
 	PrecacheParticleSystem("peejar_drips_colorable")
-
 	if CLIENT then
-		if IsValid(ent) then
-			self.SparkParticleEffects = {}
-			if self:GetSparksRed() then
-				self.SparkParticleEffects.SparksRed = ent:CreateParticleEffect("critgun_weaponmodel_red", {
-					{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
-				})
-			end
-			if self:GetSparksBlu() then
-				self.SparkParticleEffects.SparksBlu = ent:CreateParticleEffect("critgun_weaponmodel_blu", {
-					{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
-				})
-			end
-			if self:GetSparksColorable() then
-				self.SparkParticleEffects.SparksColorable = ent:CreateParticleEffect("critgun_weaponmodel_colorable", {
-					{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW},  //we overbrighten the color value (second controlpoint) by a large amount because
-					{position = (Vector(65,65,65) + (self.Color * 3))}	//crit color values actually tend to be pretty low to avoid overpowering the texture
-				})
-			end
-			if self:GetSparksJarate() then
-				self.SparkParticleEffects.SparksJarate = ent:CreateParticleEffect("peejar_drips", {
-					{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
-				})
-			end
-			if self:GetSparksJarateColorable() then
-				self.SparkParticleEffects.SparksJarateColorable = ent:CreateParticleEffect("peejar_drips_colorable", {
-					{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW},  //we overbrighten the color value for jarate drips even more,
-					{position = self.Color * 40}				//because jarate color values are so low they're in the single digits
-				})
-			end
-		end
+		self.SparkParticleEffects = {} //This gets populated in the think func
 	end
 
 	//This needs to be a CallOnRemove and not ENT:OnRemove because self:GetParent will return null
@@ -103,7 +73,9 @@ function ENT:Initialize()
 		if IsValid(ent) then
 			if CLIENT then
 				for _, particle in pairs (self.SparkParticleEffects) do
-					particle:StopEmission()
+					if particle.IsValid and particle:IsValid() then
+						particle:StopEmission()
+					end
 				end
 			end
 	
@@ -112,6 +84,50 @@ function ENT:Initialize()
 			end
 		end
 	end, ent)
+
+end
+
+
+
+
+if CLIENT then
+	
+	//Create spark/drip particles; do this every think to fix issues where fx fail to spawn or get removed by something (for example, back when we 
+	//were doing this in initialize, newly connecting clients in MP would try to spawn the fx while loading into the server, but the fx would be 
+	//invalid by the time they had fully loaded into the game. not sure if they were failing to spawn or getting removed after, but it doesn't matter.)
+
+	local function DoSparkParticleEffect(self, ent, var, pname, ptab)
+
+		if self["Get" .. var](self) and (!self.SparkParticleEffects[var] or !self.SparkParticleEffects[var].IsValid or !self.SparkParticleEffects[var]:IsValid()) then
+			self.SparkParticleEffects[var] = ent:CreateParticleEffect(pname, ptab)
+		end
+
+	end
+
+	function ENT:Think()
+
+		local ent = self:GetParent()
+		if IsValid(ent) then
+			DoSparkParticleEffect(self, ent, "SparksRed", "critgun_weaponmodel_red", {
+				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
+			})
+			DoSparkParticleEffect(self, ent, "SparksBlu", "critgun_weaponmodel_blu", {
+				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
+			})
+			DoSparkParticleEffect(self, ent, "SparksColorable", "critgun_weaponmodel_colorable", {
+				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW},  //we overbrighten the color value (second controlpoint) by a large amount because
+				{position = (Vector(65,65,65) + (self.Color * 3))}	//crit color values actually tend to be pretty low to avoid overpowering the texture
+			})
+			DoSparkParticleEffect(self, ent, "SparksJarate", "peejar_drips", {
+				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
+			})
+			DoSparkParticleEffect(self, ent, "SparksJarateColorable", "peejar_drips_colorable", {
+				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW},  //we overbrighten the color value for jarate drips even more,
+				{position = self.Color * 40}				//because jarate color values are so low they're in the single digits
+			})
+		end
+
+	end
 
 end
 
