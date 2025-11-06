@@ -96,10 +96,16 @@ if CLIENT then
 	//were doing this in initialize, newly connecting clients in MP would try to spawn the fx while loading into the server, but the fx would be 
 	//invalid by the time they had fully loaded into the game. not sure if they were failing to spawn or getting removed after, but it doesn't matter.)
 
-	local function DoSparkParticleEffect(self, ent, var, pname, ptab)
+	local function DoSparkParticleEffect(self, ent, var, pname, col)
 
 		if self["Get" .. var](self) and (!self.SparkParticleEffects[var] or !self.SparkParticleEffects[var].IsValid or !self.SparkParticleEffects[var]:IsValid()) then
-			self.SparkParticleEffects[var] = ent:CreateParticleEffect(pname, ptab)
+			
+			local part = CreateParticleSystem(ent, pname, PATTACH_ABSORIGIN_FOLLOW, 0)
+			if col then
+				part:AddControlPoint(1, game.GetWorld(), PATTACH_WORLDORIGIN, 0, col)
+			end
+			self.SparkParticleEffects[var] = part
+			
 		end
 
 	end
@@ -108,23 +114,15 @@ if CLIENT then
 
 		local ent = self:GetParent()
 		if IsValid(ent) then
-			DoSparkParticleEffect(self, ent, "SparksRed", "critgun_weaponmodel_red", {
-				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
-			})
-			DoSparkParticleEffect(self, ent, "SparksBlu", "critgun_weaponmodel_blu", {
-				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
-			})
-			DoSparkParticleEffect(self, ent, "SparksColorable", "critgun_weaponmodel_colorable", {
-				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW},  //we overbrighten the color value (second controlpoint) by a large amount because
-				{position = (Vector(65,65,65) + (self.Color * 3))}	//crit color values actually tend to be pretty low to avoid overpowering the texture
-			})
-			DoSparkParticleEffect(self, ent, "SparksJarate", "peejar_drips", {
-				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW}
-			})
-			DoSparkParticleEffect(self, ent, "SparksJarateColorable", "peejar_drips_colorable", {
-				{entity = ent, attachtype = PATTACH_ABSORIGIN_FOLLOW},  //we overbrighten the color value for jarate drips even more,
-				{position = self.Color * 40}				//because jarate color values are so low they're in the single digits
-			})
+			DoSparkParticleEffect(self, ent, "SparksRed", "critgun_weaponmodel_red")
+			DoSparkParticleEffect(self, ent, "SparksBlu", "critgun_weaponmodel_blu")
+			DoSparkParticleEffect(self, ent, "SparksColorable", "critgun_weaponmodel_colorable", 
+				Vector(65,65,65) + (self.Color * 3)	//we overbrighten the color value (second controlpoint) by a large amount because
+			)						//crit color values actually tend to be pretty low to avoid overpowering the texture
+			DoSparkParticleEffect(self, ent, "SparksJarate", "peejar_drips")
+			DoSparkParticleEffect(self, ent, "SparksJarateColorable", "peejar_drips_colorable", 
+				self.Color * 40		//we overbrighten the color value for jarate drips even more,
+			)				//because jarate color values are so low they're in the single digits
 		end
 
 	end
