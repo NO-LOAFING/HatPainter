@@ -319,31 +319,37 @@ if CLIENT then
 	//	MsgN(k, " = ", #v)
 	//end
 
+	//This is a global function so that other addons can access override colors
+	function ProxyentPaintColor_GetOverrideColor(override)
+
+		//This is how TF2 stores paint color values internally; we've already unpacked these manually for the normal colors, but the halloween paints
+		//have way too many colors each for that to be practical (https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_wearable.cpp#L524)
+		local function PackedRGBToTab(n)
+			n = string.Right(bit.tohex(n),6)
+			return {tonumber(string.sub(n,1,2),16), tonumber(string.sub(n,3,4),16), tonumber(string.sub(n,5,6),16)}
+		end
+
+		//Based off econ_item_view.cpp RemapOverridePaintIndexToRGB (https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_item_view.cpp#L1251)
+
+		local scaledTime = CurTime() * 22 //"arbitrary time scalar people liked"
+		local samplePoint0 = math.Round(scaledTime) % #ProxyentPaintColor_Overrides[override]
+		local samplePoint1 = (samplePoint0 + 1) % #ProxyentPaintColor_Overrides[override]
+		//MsgN(samplePoint0, " ", samplePoint1)
+
+		local delta = scaledTime - math.Round(scaledTime)
+
+		local c0 = PackedRGBToTab(ProxyentPaintColor_Overrides[override][samplePoint0+1]) //+1 because lua tables start at 1, not 0
+		local c1 = PackedRGBToTab(ProxyentPaintColor_Overrides[override][samplePoint1+1]) //^
+
+		return Vector(Lerp(delta, c0[1], c1[1]), Lerp(delta, c0[2], c1[2]), Lerp(delta, c0[3], c1[3]))
+
+	end
+
 	function ENT:Think()
 
 		local override = self:GetPaintOverride()
 		if override > 0 then
-			//This is how TF2 stores paint color values internally; we've already unpacked these manually for the normal colors, but the halloween paints
-			//have way too many colors each for that to be practical (https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_wearable.cpp#L524)
-			local function PackedRGBToTab(n)
-				n = string.Right(bit.tohex(n),6)
-				return {tonumber(string.sub(n,1,2),16), tonumber(string.sub(n,3,4),16), tonumber(string.sub(n,5,6),16)}
-			end
-
-			//Based off econ_item_view.cpp RemapOverridePaintIndexToRGB (https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_item_view.cpp#L1251)
-
-			local scaledTime = CurTime() * 22 //"arbitrary time scalar people liked"
-			local samplePoint0 = math.Round(scaledTime) % #ProxyentPaintColor_Overrides[override]
-			local samplePoint1 = (samplePoint0 + 1) % #ProxyentPaintColor_Overrides[override]
-			//MsgN(samplePoint0, " ", samplePoint1)
-
-			local delta = scaledTime - math.Round(scaledTime)
-
-			local c0 = PackedRGBToTab(ProxyentPaintColor_Overrides[override][samplePoint0+1]) //+1 because lua tables start at 1, not 0
-			local c1 = PackedRGBToTab(ProxyentPaintColor_Overrides[override][samplePoint1+1]) //^
-
-			self.Color = Vector(Lerp(delta, c0[1], c1[1])/255, Lerp(delta, c0[2], c1[2])/255, Lerp(delta, c0[3], c1[3])/255)
-
+			self.Color = ProxyentPaintColor_GetOverrideColor(override)/255
 			return true
 		end
 
