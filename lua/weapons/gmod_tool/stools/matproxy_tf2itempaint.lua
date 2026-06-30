@@ -231,7 +231,7 @@ function TOOL.BuildCPanel(panel)
 					matproxy_tf2itempaint_b = "74",
 					matproxy_tf2itempaint_override = "0",
 				}
-				data["Particularly Drab Tincture"] = {
+				data["Peculiarly Drab Tincture"] = {
 					matproxy_tf2itempaint_r = "197",
 					matproxy_tf2itempaint_g = "175",
 					matproxy_tf2itempaint_b = "145",
