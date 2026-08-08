@@ -303,7 +303,7 @@ ProxyentPaintColor_Overrides = {
 //These are global functions so that other addons can access override colors and read packed RGB codes (i.e. from item schema)
 
 //This is how TF2 stores paint color values internally; we've already unpacked these manually for the normal colors, but the halloween paints
-//have way too many colors each for that to be practical (https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_wearable.cpp#L524)
+//have way too many colors each for that to be practical (https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/game/shared/econ/econ_wearable.cpp#L529)
 function ProxyentPaintColor_PackedRGBToTab(n)
 
 	n = string.Right(bit.tohex(n),6)
@@ -313,7 +313,7 @@ end
 
 function ProxyentPaintColor_GetOverrideColor(override)
 
-	//Based off econ_item_view.cpp RemapOverridePaintIndexToRGB (https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_item_view.cpp#L1251)
+	//Based off econ_item_view.cpp RemapOverridePaintIndexToRGB (https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/game/shared/econ/econ_item_view.cpp#L1248)
 
 	local scaledTime = CurTime() * 22 //"arbitrary time scalar people liked"
 	local samplePoint0 = math.Round(scaledTime) % #ProxyentPaintColor_Overrides[override]

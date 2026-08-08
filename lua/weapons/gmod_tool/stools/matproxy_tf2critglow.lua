@@ -241,8 +241,8 @@ function TOOL.BuildCPanel(panel)
 	})
 
 	//Color values confirmed from TF2 source code:
-	//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/client/tf/c_tf_player.cpp#L2301-L2334 (weapon glows)
-	//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/client/tf/c_tf_player.cpp#L2228 (jarate)
+	//https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/game/client/tf/c_tf_player.cpp#L2027-L2060 (weapon glows)
+	//https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/game/client/tf/c_tf_player.cpp#L1943-L1962 (jarate)
 	local listpanel = panel:AddControl("ListBox", {
 		Label = "Color", 
 		Height = 136, 

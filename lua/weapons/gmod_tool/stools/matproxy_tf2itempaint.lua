@@ -398,7 +398,7 @@ function TOOL.BuildCPanel(panel)
 			},
 		},
 		spoopy = { //Halloween Spell Paints
-			//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_item_view.cpp#L1517
+			//https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/game/shared/econ/econ_item_view.cpp#L1514-L1532
 			//see override tables in proxyent_tf2itempaint
 			["Die Job"] = {matproxy_tf2itempaint_override = "1"}, //&k_unWitchYellow[0],
 			["Chromatic Corruption"] = {matproxy_tf2itempaint_override = "2"}, //&k_unDistinctiveLackOfSanity[0],
