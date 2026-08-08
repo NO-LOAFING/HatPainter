@@ -3,11 +3,11 @@ TOOL.Name = "Color - TF2 Paint"
 TOOL.Command = nil
 TOOL.ConfigName = "" 
  
-TOOL.ClientConVar["r"] = "45"
-TOOL.ClientConVar["g"] = "45"
-TOOL.ClientConVar["b"] = "36"
-TOOL.ClientConVar["override"] = "0"
-TOOL.ClientConVar["whichlist"] = "original"
+TOOL.ClientConVar.r = "45"
+TOOL.ClientConVar.g = "45"
+TOOL.ClientConVar.b = "36"
+TOOL.ClientConVar.override = "0"
+TOOL.ClientConVar.whichlist = "original"
 
 TOOL.Information = {
 	{name = "left0", stage = 0, icon = "gui/lmb.png"},
@@ -140,7 +140,7 @@ end
 
 
 local ConVarsDefault = TOOL:BuildConVarList()
-ConVarsDefault["matproxy_tf2itempaint_whichlist"] = nil  //don't save the selected list in presets
+ConVarsDefault.matproxy_tf2itempaint_whichlist = nil //don't save the selected list in presets
 
 function TOOL.BuildCPanel(panel)
 
@@ -171,264 +171,256 @@ function TOOL.BuildCPanel(panel)
 	panel.PaintList = panel:AddControl("ListBox", {
 		Label = "Color",
 		Height = 153,
-		Options = {},
 	})
-
+	local lists = {
+		original = { //Original Paints
+			["A Deep Commitment to Purple"] = {
+				matproxy_tf2itempaint_r = "125",
+				matproxy_tf2itempaint_g = "64",
+				matproxy_tf2itempaint_b = "113",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Aged Moustache Gray"] = {
+				matproxy_tf2itempaint_r = "126",
+				matproxy_tf2itempaint_g = "126",
+				matproxy_tf2itempaint_b = "126",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Australium Gold"] = {
+				matproxy_tf2itempaint_r = "231",
+				matproxy_tf2itempaint_g = "181",
+				matproxy_tf2itempaint_b = "59",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Color 216-190-216"] = {
+				matproxy_tf2itempaint_r = "216",
+				matproxy_tf2itempaint_g = "190",
+				matproxy_tf2itempaint_b = "216",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Indubitably Green"] = {
+				matproxy_tf2itempaint_r = "114",
+				matproxy_tf2itempaint_g = "158",
+				matproxy_tf2itempaint_b = "66",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Mann Co. Orange"] = {
+				matproxy_tf2itempaint_r = "207",
+				matproxy_tf2itempaint_g = "115",
+				matproxy_tf2itempaint_b = "54",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Muskelmannbraun"] = {
+				matproxy_tf2itempaint_r = "165",
+				matproxy_tf2itempaint_g = "117",
+				matproxy_tf2itempaint_b = "69",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Noble Hatter's Violet"] = {
+				matproxy_tf2itempaint_r = "81",
+				matproxy_tf2itempaint_g = "56",
+				matproxy_tf2itempaint_b = "74",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Peculiarly Drab Tincture"] = {
+				matproxy_tf2itempaint_r = "197",
+				matproxy_tf2itempaint_g = "175",
+				matproxy_tf2itempaint_b = "145",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Radigan Conagher Brown"] = {
+				matproxy_tf2itempaint_r = "105",
+				matproxy_tf2itempaint_g = "77",
+				matproxy_tf2itempaint_b = "58",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Ye Olde Rustic Colour"] = {
+				matproxy_tf2itempaint_r = "124",
+				matproxy_tf2itempaint_g = "108",
+				matproxy_tf2itempaint_b = "87",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Zepheniah's Greed"] = {
+				matproxy_tf2itempaint_r = "66",
+				matproxy_tf2itempaint_g = "79",
+				matproxy_tf2itempaint_b = "59",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["An Extraordinary Abundance of Tinge"] = {
+				matproxy_tf2itempaint_r = "230",
+				matproxy_tf2itempaint_g = "230",
+				matproxy_tf2itempaint_b = "230",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["A Distinctive Lack of Hue"] = {
+				matproxy_tf2itempaint_r = "20",
+				matproxy_tf2itempaint_g = "20",
+				matproxy_tf2itempaint_b = "20",
+				matproxy_tf2itempaint_override = "0",
+			},
+		},
+		theonewithpinkandlime = { //The Bad-Paintening of December 2010
+			["A Color Similar to Slate"] = {
+				matproxy_tf2itempaint_r = "47",
+				matproxy_tf2itempaint_g = "79",
+				matproxy_tf2itempaint_b = "79",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Dark Salmon Injustice"] = {
+				matproxy_tf2itempaint_r = "233",
+				matproxy_tf2itempaint_g = "150",
+				matproxy_tf2itempaint_b = "122",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Drably Olive"] = {
+				matproxy_tf2itempaint_r = "128",
+				matproxy_tf2itempaint_g = "128",
+				matproxy_tf2itempaint_b = "0",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["The Color of a Gentlemann's Business Pants"] = {
+				matproxy_tf2itempaint_r = "240",
+				matproxy_tf2itempaint_g = "230",
+				matproxy_tf2itempaint_b = "140",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["The Bitter Taste of Defeat and Lime"] = {
+				matproxy_tf2itempaint_r = "50",
+				matproxy_tf2itempaint_g = "205",
+				matproxy_tf2itempaint_b = "50",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Pink as Hell"] = {
+				matproxy_tf2itempaint_r = "255",
+				matproxy_tf2itempaint_g = "105",
+				matproxy_tf2itempaint_b = "180",
+				matproxy_tf2itempaint_override = "0",
+			},
+		},
+		newpaints = { //"Newer" Paints
+			["A Mann's Mint"] = {
+				matproxy_tf2itempaint_r = "188",
+				matproxy_tf2itempaint_g = "221",
+				matproxy_tf2itempaint_b = "179",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["After Eight"] = {
+				matproxy_tf2itempaint_r = "45",
+				matproxy_tf2itempaint_g = "45",
+				matproxy_tf2itempaint_b = "36",
+				matproxy_tf2itempaint_override = "0",
+			},
+		},
+		teampaints = { //Team Colors
+			["Team Spirit, RED"] = {
+				matproxy_tf2itempaint_r = "184",
+				matproxy_tf2itempaint_g = "56",
+				matproxy_tf2itempaint_b = "59",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Team Spirit, BLU"] = {
+				matproxy_tf2itempaint_r = "88",
+				matproxy_tf2itempaint_g = "133",
+				matproxy_tf2itempaint_b = "162",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["The Value of Teamwork, RED"] = {
+				matproxy_tf2itempaint_r = "128",
+				matproxy_tf2itempaint_g = "48",
+				matproxy_tf2itempaint_b = "32",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["The Value of Teamwork, BLU"] = {
+				matproxy_tf2itempaint_r = "37",
+				matproxy_tf2itempaint_g = "109",
+				matproxy_tf2itempaint_b = "141",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Waterlogged Lab Coat, RED"] = {
+				matproxy_tf2itempaint_r = "168",
+				matproxy_tf2itempaint_g = "154",
+				matproxy_tf2itempaint_b = "140",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Waterlogged Lab Coat, BLU"] = {
+				matproxy_tf2itempaint_r = "131",
+				matproxy_tf2itempaint_g = "159",
+				matproxy_tf2itempaint_b = "163",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["An Air of Debonair, RED"] = {
+				matproxy_tf2itempaint_r = "101",
+				matproxy_tf2itempaint_g = "71",
+				matproxy_tf2itempaint_b = "64",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["An Air of Debonair, BLU"] = {
+				matproxy_tf2itempaint_r = "40",
+				matproxy_tf2itempaint_g = "57",
+				matproxy_tf2itempaint_b = "77",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Balaclavas Are Forever, RED"] = {
+				matproxy_tf2itempaint_r = "59",
+				matproxy_tf2itempaint_g = "31",
+				matproxy_tf2itempaint_b = "35",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Balaclavas Are Forever, BLU"] = {
+				matproxy_tf2itempaint_r = "24",
+				matproxy_tf2itempaint_g = "35",
+				matproxy_tf2itempaint_b = "61",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Operator's Overalls, RED"] = {
+				matproxy_tf2itempaint_r = "72",
+				matproxy_tf2itempaint_g = "56",
+				matproxy_tf2itempaint_b = "56",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Operator's Overalls, BLU"] = {
+				matproxy_tf2itempaint_r = "56",
+				matproxy_tf2itempaint_g = "66",
+				matproxy_tf2itempaint_b = "72",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Cream Spirit, RED"] = {
+				matproxy_tf2itempaint_r = "195",
+				matproxy_tf2itempaint_g = "108",
+				matproxy_tf2itempaint_b = "45",
+				matproxy_tf2itempaint_override = "0",
+			},
+			["Cream Spirit, BLU"] = {
+				matproxy_tf2itempaint_r = "184",
+				matproxy_tf2itempaint_g = "128",
+				matproxy_tf2itempaint_b = "53",
+				matproxy_tf2itempaint_override = "0",
+			},
+		},
+		spoopy = { //Halloween Spell Paints
+			//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_item_view.cpp#L1517
+			//see override tables in proxyent_tf2itempaint
+			["Die Job"] = {matproxy_tf2itempaint_override = "1"}, //&k_unWitchYellow[0],
+			["Chromatic Corruption"] = {matproxy_tf2itempaint_override = "2"}, //&k_unDistinctiveLackOfSanity[0],
+			["Putrescent Pigmentation"] = {matproxy_tf2itempaint_override = "3"}, //&k_unOverabundanceOfRottingFlesh[0],
+			["Spectral Spectrum, RED"] = {matproxy_tf2itempaint_override = "4"}, //&k_unTheFlamesBelow[0], //red
+			["Spectral Spectrum, BLU"] = {matproxy_tf2itempaint_override = "6"}, //&k_unBubbleBubble[0], //blu
+			["Sinister Staining"] = {matproxy_tf2itempaint_override = "5"}, //&k_unThatQueesyFeeling[0],
+			["Afraid of Shadows (unused)"] = {matproxy_tf2itempaint_override = "7"}, //&k_unAfraidOfShadowsDark[0],
+		},
+	}
 	panel.PaintList.OldThink = panel.PaintList.Think
 	panel.PaintList.Think = function(self, ...)
 		local whichlist = GetConVar("matproxy_tf2itempaint_whichlist"):GetString()
 		if whichlist != self.CurWhichlist then
 			self.CurWhichlist = whichlist
-			local data = {}
 
-			//Original Paints
-			if whichlist == "original" then
-				data["A Deep Commitment to Purple"] = {
-					matproxy_tf2itempaint_r = "125",
-					matproxy_tf2itempaint_g = "64",
-					matproxy_tf2itempaint_b = "113",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Aged Moustache Gray"] = {
-					matproxy_tf2itempaint_r = "126",
-					matproxy_tf2itempaint_g = "126",
-					matproxy_tf2itempaint_b = "126",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Australium Gold"] = {
-					matproxy_tf2itempaint_r = "231",
-					matproxy_tf2itempaint_g = "181",
-					matproxy_tf2itempaint_b = "59",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Color 216-190-216"] = {
-					matproxy_tf2itempaint_r = "216",
-					matproxy_tf2itempaint_g = "190",
-					matproxy_tf2itempaint_b = "216",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Indubitably Green"] = {
-					matproxy_tf2itempaint_r = "114",
-					matproxy_tf2itempaint_g = "158",
-					matproxy_tf2itempaint_b = "66",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Mann Co. Orange"] = {
-					matproxy_tf2itempaint_r = "207",
-					matproxy_tf2itempaint_g = "115",
-					matproxy_tf2itempaint_b = "54",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Muskelmannbraun"] = {
-					matproxy_tf2itempaint_r = "165",
-					matproxy_tf2itempaint_g = "117",
-					matproxy_tf2itempaint_b = "69",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Noble Hatter's Violet"] = {
-					matproxy_tf2itempaint_r = "81",
-					matproxy_tf2itempaint_g = "56",
-					matproxy_tf2itempaint_b = "74",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Peculiarly Drab Tincture"] = {
-					matproxy_tf2itempaint_r = "197",
-					matproxy_tf2itempaint_g = "175",
-					matproxy_tf2itempaint_b = "145",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Radigan Conagher Brown"] = {
-					matproxy_tf2itempaint_r = "105",
-					matproxy_tf2itempaint_g = "77",
-					matproxy_tf2itempaint_b = "58",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Ye Olde Rustic Colour"] = {
-					matproxy_tf2itempaint_r = "124",
-					matproxy_tf2itempaint_g = "108",
-					matproxy_tf2itempaint_b = "87",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Zepheniah's Greed"] = {
-					matproxy_tf2itempaint_r = "66",
-					matproxy_tf2itempaint_g = "79",
-					matproxy_tf2itempaint_b = "59",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["An Extraordinary Abundance of Tinge"] = {
-					matproxy_tf2itempaint_r = "230",
-					matproxy_tf2itempaint_g = "230",
-					matproxy_tf2itempaint_b = "230",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["A Distinctive Lack of Hue"] = {
-					matproxy_tf2itempaint_r = "20",
-					matproxy_tf2itempaint_g = "20",
-					matproxy_tf2itempaint_b = "20",
-					matproxy_tf2itempaint_override = "0",
-				}
-			//The Bad-Paintening of December 2010
-			elseif whichlist == "theonewithpinkandlime" then
-				data["A Color Similar to Slate"] = {
-					matproxy_tf2itempaint_r = "47",
-					matproxy_tf2itempaint_g = "79",
-					matproxy_tf2itempaint_b = "79",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Dark Salmon Injustice"] = {
-					matproxy_tf2itempaint_r = "233",
-					matproxy_tf2itempaint_g = "150",
-					matproxy_tf2itempaint_b = "122",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Drably Olive"] = {
-					matproxy_tf2itempaint_r = "128",
-					matproxy_tf2itempaint_g = "128",
-					matproxy_tf2itempaint_b = "0",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["The Color of a Gentlemann's Business Pants"] = {
-					matproxy_tf2itempaint_r = "240",
-					matproxy_tf2itempaint_g = "230",
-					matproxy_tf2itempaint_b = "140",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["The Bitter Taste of Defeat and Lime"] = {
-					matproxy_tf2itempaint_r = "50",
-					matproxy_tf2itempaint_g = "205",
-					matproxy_tf2itempaint_b = "50",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Pink as Hell"] = {
-					matproxy_tf2itempaint_r = "255",
-					matproxy_tf2itempaint_g = "105",
-					matproxy_tf2itempaint_b = "180",
-					matproxy_tf2itempaint_override = "0",
-				}
-			//"Newer" Paints
-			elseif whichlist == "newpaints" then
-				data["A Mann's Mint"] = {
-					matproxy_tf2itempaint_r = "188",
-					matproxy_tf2itempaint_g = "221",
-					matproxy_tf2itempaint_b = "179",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["After Eight"] = {
-					matproxy_tf2itempaint_r = "45",
-					matproxy_tf2itempaint_g = "45",
-					matproxy_tf2itempaint_b = "36",
-					matproxy_tf2itempaint_override = "0",
-				}
-			//Team Colors
-			elseif whichlist == "teampaints" then
-				data["Team Spirit, RED"] = {
-					matproxy_tf2itempaint_r = "184",
-					matproxy_tf2itempaint_g = "56",
-					matproxy_tf2itempaint_b = "59",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Team Spirit, BLU"] = {
-					matproxy_tf2itempaint_r = "88",
-					matproxy_tf2itempaint_g = "133",
-					matproxy_tf2itempaint_b = "162",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["The Value of Teamwork, RED"] = {
-					matproxy_tf2itempaint_r = "128",
-					matproxy_tf2itempaint_g = "48",
-					matproxy_tf2itempaint_b = "32",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["The Value of Teamwork, BLU"] = {
-					matproxy_tf2itempaint_r = "37",
-					matproxy_tf2itempaint_g = "109",
-					matproxy_tf2itempaint_b = "141",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Waterlogged Lab Coat, RED"] = {
-					matproxy_tf2itempaint_r = "168",
-					matproxy_tf2itempaint_g = "154",
-					matproxy_tf2itempaint_b = "140",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Waterlogged Lab Coat, BLU"] = {
-					matproxy_tf2itempaint_r = "131",
-					matproxy_tf2itempaint_g = "159",
-					matproxy_tf2itempaint_b = "163",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["An Air of Debonair, RED"] = {
-					matproxy_tf2itempaint_r = "101",
-					matproxy_tf2itempaint_g = "71",
-					matproxy_tf2itempaint_b = "64",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["An Air of Debonair, BLU"] = {
-					matproxy_tf2itempaint_r = "40",
-					matproxy_tf2itempaint_g = "57",
-					matproxy_tf2itempaint_b = "77",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Balaclavas Are Forever, RED"] = {
-					matproxy_tf2itempaint_r = "59",
-					matproxy_tf2itempaint_g = "31",
-					matproxy_tf2itempaint_b = "35",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Balaclavas Are Forever, BLU"] = {
-					matproxy_tf2itempaint_r = "24",
-					matproxy_tf2itempaint_g = "35",
-					matproxy_tf2itempaint_b = "61",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Operator's Overalls, RED"] = {
-					matproxy_tf2itempaint_r = "72",
-					matproxy_tf2itempaint_g = "56",
-					matproxy_tf2itempaint_b = "56",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Operator's Overalls, BLU"] = {
-					matproxy_tf2itempaint_r = "56",
-					matproxy_tf2itempaint_g = "66",
-					matproxy_tf2itempaint_b = "72",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Cream Spirit, RED"] = {
-					matproxy_tf2itempaint_r = "195",
-					matproxy_tf2itempaint_g = "108",
-					matproxy_tf2itempaint_b = "45",
-					matproxy_tf2itempaint_override = "0",
-				}
-				data["Cream Spirit, BLU"] = {
-					matproxy_tf2itempaint_r = "184",
-					matproxy_tf2itempaint_g = "128",
-					matproxy_tf2itempaint_b = "53",
-					matproxy_tf2itempaint_override = "0",
-				}
-			//Halloween Spell Paints
-			elseif whichlist == "spoopy" then
-				//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/shared/econ/econ_item_view.cpp#L1517
-				//see override tables in proxyent_tf2itempaint
-				data["Die Job"] = { matproxy_tf2itempaint_override = "1" } //&k_unWitchYellow[0],
-				data["Chromatic Corruption"] = { matproxy_tf2itempaint_override = "2" } //&k_unDistinctiveLackOfSanity[0],
-				data["Putrescent Pigmentation"] = { matproxy_tf2itempaint_override = "3" } //&k_unOverabundanceOfRottingFlesh[0],
-				data["Spectral Spectrum, RED"] = { matproxy_tf2itempaint_override = "4" } //&k_unTheFlamesBelow[0], //red
-				data["Spectral Spectrum, BLU"] = { matproxy_tf2itempaint_override = "6" } //&k_unBubbleBubble[0], //blu
-				data["Sinister Staining"] = { matproxy_tf2itempaint_override = "5" } //&k_unThatQueesyFeeling[0],
-				data["Afraid of Shadows (unused)"] = { matproxy_tf2itempaint_override = "7" } //&k_unAfraidOfShadowsDark[0],
-			end
-
-			//Replace the options currently in the panel with the ones in the data table
-			panel.PaintList.Options = {}
-			for name, command in pairs(data) do
-				panel.PaintList.Options[name] = command
-			end
-
+			//Replace the options currently in the panel with sthe ones in the data table
 			panel.PaintList:Clear()
-			for k, v in pairs(panel.PaintList.Options) do
+			for k, v in pairs (lists[whichlist]) do
 				local line = panel.PaintList:AddLine(k)
 				line.data = v
-				//If a line's color is currently selected, then highlight it (mostly for spells so players aren't confused as to why color picker is disabled)
+				//If a line's color is currently selected, then highlight it (make sure EVERY convar matches, unlike the default behavior which only has to match one (https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/controlpanel.lua#L392-L398))
 				local selected = true
 				for k2, v2 in pairs (v) do
 					if GetConVar(k2):GetInt() != tonumber(v2) then selected = false end

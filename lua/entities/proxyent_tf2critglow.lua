@@ -72,9 +72,9 @@ function ENT:Initialize()
 	self:CallOnRemove("RemoveProxyentCritGlow", function(self, ent)
 		if IsValid(ent) then
 			if CLIENT then
-				for _, particle in pairs (self.SparkParticleEffects) do
-					if particle.IsValid and particle:IsValid() then
-						particle:StopEmission()
+				for _, p in pairs (self.SparkParticleEffects) do
+					if p.IsValid and p:IsValid() then
+						p:StopEmission()
 					end
 				end
 			end
@@ -96,33 +96,28 @@ if CLIENT then
 	//were doing this in initialize, newly connecting clients in MP would try to spawn the fx while loading into the server, but the fx would be 
 	//invalid by the time they had fully loaded into the game. not sure if they were failing to spawn or getting removed after, but it doesn't matter.)
 
-	local function DoSparkParticleEffect(self, ent, var, pname, col)
-
-		if self["Get" .. var](self) and (!self.SparkParticleEffects[var] or !self.SparkParticleEffects[var].IsValid or !self.SparkParticleEffects[var]:IsValid()) then
-			
-			local part = CreateParticleSystem(ent, pname, PATTACH_ABSORIGIN_FOLLOW, 0)
-			if col then
-				part:AddControlPoint(1, game.GetWorld(), PATTACH_WORLDORIGIN, 0, col)
-			end
-			self.SparkParticleEffects[var] = part
-			
-		end
-
-	end
+	local bright = Vector(65,65,65)
+	local SparkParticleEffects = {
+		GetSparksRed = {p = "critgun_weaponmodel_red"},
+		GetSparksBlu = {p = "critgun_weaponmodel_blu"},
+		GetSparksColorable = {p = "critgun_weaponmodel_colorable", col = function(col) return bright + (col * 3) end}, 	//we overbrighten the color value (second controlpoint) by a large amount because
+		GetSparksJarate = {p = "peejar_drips"},										//crit color values actually tend to be pretty low to avoid overpowering the texture
+		GetSparksJarateColorable = {p = "peejar_drips_colorable", col = function(col) return col * 40 end},	//we overbrighten the color value for jarate drips even more,
+	}														//because jarate color values are so low they're in the single digits
 
 	function ENT:Think()
 
 		local ent = self:GetParent()
 		if IsValid(ent) then
-			DoSparkParticleEffect(self, ent, "SparksRed", "critgun_weaponmodel_red")
-			DoSparkParticleEffect(self, ent, "SparksBlu", "critgun_weaponmodel_blu")
-			DoSparkParticleEffect(self, ent, "SparksColorable", "critgun_weaponmodel_colorable", 
-				Vector(65,65,65) + (self.Color * 3)	//we overbrighten the color value (second controlpoint) by a large amount because
-			)						//crit color values actually tend to be pretty low to avoid overpowering the texture
-			DoSparkParticleEffect(self, ent, "SparksJarate", "peejar_drips")
-			DoSparkParticleEffect(self, ent, "SparksJarateColorable", "peejar_drips_colorable", 
-				self.Color * 40		//we overbrighten the color value for jarate drips even more,
-			)				//because jarate color values are so low they're in the single digits
+			for var, tab in pairs (SparkParticleEffects) do
+				if self[var](self) and (!self.SparkParticleEffects[var] or !self.SparkParticleEffects[var].IsValid or !self.SparkParticleEffects[var]:IsValid()) then
+					local p = CreateParticleSystem(ent, tab.p, PATTACH_ABSORIGIN_FOLLOW, 0)
+					if tab.col then
+						p:AddControlPoint(1, game.GetWorld(), PATTACH_WORLDORIGIN, 0, tab.col(self.Color))
+					end
+					self.SparkParticleEffects[var] = p
+				end
+			end
 		end
 
 	end
@@ -139,5 +134,5 @@ end
 
 
 
-//prevent the entity from being duplicated
+//prevent this entity from being duplicated, it will be recreated by an entity modifier on the parent entity instead
 duplicator.RegisterEntityClass("proxyent_tf2critglow", function(ply, data) end, "Data")

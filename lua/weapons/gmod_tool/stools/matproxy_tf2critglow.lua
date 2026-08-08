@@ -3,14 +3,14 @@ TOOL.Name = "Color - TF2 Crit Glow / Jarate"
 TOOL.Command = nil
 TOOL.ConfigName = "" 
  
-TOOL.ClientConVar["r"] = "80"
-TOOL.ClientConVar["g"] = "8"
-TOOL.ClientConVar["b"] = "5"
-TOOL.ClientConVar["sparksr"] = "1"
-TOOL.ClientConVar["sparksb"] = "0"
-TOOL.ClientConVar["sparksc"] = "0"
-TOOL.ClientConVar["sparksj"] = "0"
-TOOL.ClientConVar["sparksjc"] = "0"
+TOOL.ClientConVar.r = "80"
+TOOL.ClientConVar.g = "8"
+TOOL.ClientConVar.b = "5"
+TOOL.ClientConVar.sparksr = "1"
+TOOL.ClientConVar.sparksb = "0"
+TOOL.ClientConVar.sparksc = "0"
+TOOL.ClientConVar.sparksj = "0"
+TOOL.ClientConVar.sparksjc = "0"
 
 TOOL.Information = {
 	{name = "left0", stage = 0, icon = "gui/lmb.png"},
@@ -243,84 +243,93 @@ function TOOL.BuildCPanel(panel)
 	//Color values confirmed from TF2 source code:
 	//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/client/tf/c_tf_player.cpp#L2301-L2334 (weapon glows)
 	//https://github.com/mastercomfig/tf2-patches/blob/main/src/game/client/tf/c_tf_player.cpp#L2228 (jarate)
-	local colorpanel = panel:AddControl("ListBox", {
+	local listpanel = panel:AddControl("ListBox", {
 		Label = "Color", 
 		Height = 136, 
-		Options = {
-			["Critboost, RED"] = {
-				matproxy_tf2critglow_r = "80",
-				matproxy_tf2critglow_g = "8",
-				matproxy_tf2critglow_b = "5",
-				matproxy_tf2critglow_sparksr = "1",
-				matproxy_tf2critglow_sparksb = "0",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "0",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-			["Critboost, BLU"] = {
-				matproxy_tf2critglow_r = "5",
-				matproxy_tf2critglow_g = "20",
-				matproxy_tf2critglow_b = "80",
-				matproxy_tf2critglow_sparksr = "0",
-				matproxy_tf2critglow_sparksb = "1",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "0",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-			["Mini-crits, RED"] = {
-				matproxy_tf2critglow_r = "226",
-				matproxy_tf2critglow_g = "150",
-				matproxy_tf2critglow_b = "62",
-				matproxy_tf2critglow_sparksr = "0",
-				matproxy_tf2critglow_sparksb = "0",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "0",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-			["Mini-crits, BLU"] = {
-				matproxy_tf2critglow_r = "29",
-				matproxy_tf2critglow_g = "202",
-				matproxy_tf2critglow_b = "135",
-				matproxy_tf2critglow_sparksr = "0",
-				matproxy_tf2critglow_sparksb = "0",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "0",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-			["Hype mode"] = {
-				matproxy_tf2critglow_r = "50",
-				matproxy_tf2critglow_g = "2",
-				matproxy_tf2critglow_b = "48",
-				matproxy_tf2critglow_sparksr = "0",
-				matproxy_tf2critglow_sparksb = "0",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "0",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-			["Jarated, RED"] = {
-				matproxy_tf2critglow_r = "6",
-				matproxy_tf2critglow_g = "9",
-				matproxy_tf2critglow_b = "2",
-				matproxy_tf2critglow_sparksr = "0",
-				matproxy_tf2critglow_sparksb = "0",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "1",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-			["Jarated, BLU"] = {
-				matproxy_tf2critglow_r = "7",
-				matproxy_tf2critglow_g = "5",
-				matproxy_tf2critglow_b = "1",
-				matproxy_tf2critglow_sparksr = "0",
-				matproxy_tf2critglow_sparksb = "0",
-				matproxy_tf2critglow_sparksc = "0",
-				matproxy_tf2critglow_sparksj = "1",
-				matproxy_tf2critglow_sparksjc = "0",
-			},
-		},
 	})
-	colorpanel:ClearSelection()  //the default highlighting method is bad and starts off by highlighting ALL of the lines that have ANY matching convars - meaning, if we have any of 
-				     //these selected, all of them will be highlighted by default since they all have sparksc = "0". not having anything selected by default isn't as bad.
+	local options = {
+		["Critboost, RED"] = {
+			matproxy_tf2critglow_r = "80",
+			matproxy_tf2critglow_g = "8",
+			matproxy_tf2critglow_b = "5",
+			matproxy_tf2critglow_sparksr = "1",
+			matproxy_tf2critglow_sparksb = "0",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "0",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+		["Critboost, BLU"] = {
+			matproxy_tf2critglow_r = "5",
+			matproxy_tf2critglow_g = "20",
+			matproxy_tf2critglow_b = "80",
+			matproxy_tf2critglow_sparksr = "0",
+			matproxy_tf2critglow_sparksb = "1",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "0",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+		["Mini-crits, RED"] = {
+			matproxy_tf2critglow_r = "226",
+			matproxy_tf2critglow_g = "150",
+			matproxy_tf2critglow_b = "62",
+			matproxy_tf2critglow_sparksr = "0",
+			matproxy_tf2critglow_sparksb = "0",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "0",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+		["Mini-crits, BLU"] = {
+			matproxy_tf2critglow_r = "29",
+			matproxy_tf2critglow_g = "202",
+			matproxy_tf2critglow_b = "135",
+			matproxy_tf2critglow_sparksr = "0",
+			matproxy_tf2critglow_sparksb = "0",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "0",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+		["Hype mode"] = {
+			matproxy_tf2critglow_r = "50",
+			matproxy_tf2critglow_g = "2",
+			matproxy_tf2critglow_b = "48",
+			matproxy_tf2critglow_sparksr = "0",
+			matproxy_tf2critglow_sparksb = "0",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "0",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+		["Jarated, RED"] = {
+			matproxy_tf2critglow_r = "6",
+			matproxy_tf2critglow_g = "9",
+			matproxy_tf2critglow_b = "2",
+			matproxy_tf2critglow_sparksr = "0",
+			matproxy_tf2critglow_sparksb = "0",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "1",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+		["Jarated, BLU"] = {
+			matproxy_tf2critglow_r = "7",
+			matproxy_tf2critglow_g = "5",
+			matproxy_tf2critglow_b = "1",
+			matproxy_tf2critglow_sparksr = "0",
+			matproxy_tf2critglow_sparksb = "0",
+			matproxy_tf2critglow_sparksc = "0",
+			matproxy_tf2critglow_sparksj = "1",
+			matproxy_tf2critglow_sparksjc = "0",
+		},
+	}
+	for k, v in pairs (options) do
+		local line = listpanel:AddLine(k)
+		line.data = v
+		//If a line's color is currently selected, then highlight it (make sure EVERY convar matches, unlike the default behavior which only has to match one (https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/controlpanel.lua#L392-L398))
+		local selected = true
+		for k2, v2 in pairs (v) do
+			if GetConVar(k2):GetInt() != tonumber(v2) then selected = false end
+		end
+		if selected then line:SetSelected(true) end
+	end
+	listpanel:SortByColumn(1, false)
 
 	panel:AddControl("Color", {
 		Label = "Color",

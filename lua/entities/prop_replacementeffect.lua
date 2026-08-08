@@ -37,13 +37,13 @@ function ENT:Initialize()
 //	local mins = self:OBBMins()
 //	self:SetCollisionBounds(mins,maxs)
 //
-//	//self.Entity:SetModel( "models/hunter/blocks/cube025x025x025.mdl" )  
+//	//self:SetModel( "models/hunter/blocks/cube025x025x025.mdl" )  
 //	self:PhysicsInit(SOLID_OBB)
 //	self:SetSolid(SOLID_OBB)
 //	self:SetMoveType(MOVETYPE_NONE)
 
 	//if SERVER then
-	self.Entity:SetSolid(SOLID_BBOX)
+	self:SetSolid(SOLID_BBOX)
 	self:SetMoveType(MOVETYPE_NONE)
 	//end
 
@@ -53,15 +53,15 @@ end
 
 
 duplicator.RegisterEntityClass("prop_replacementeffect", function(ply, data)
-	local dupedent = ents.Create("prop_replacementeffect")
-	if (!dupedent:IsValid()) then return false end
+	local ent = ents.Create("prop_replacementeffect")
+	if (!ent:IsValid()) then return false end
 
 	//duplicator.GenericDuplicatorFunction(ply, data)
-	duplicator.DoGeneric(dupedent, data)
-	duplicator.DoGenericPhysics(dupedent, data)
+	duplicator.DoGeneric(ent, data)
+	duplicator.DoGenericPhysics(ent, data)
 
-	dupedent:Spawn()
-	dupedent:Activate()
+	ent:Spawn()
+	ent:Activate()
 
-	return dupedent
+	return ent
 end, "Data")
